@@ -3,6 +3,12 @@ import 'package:dart_code_algorithms/dart_examples/all_equal.dart';
 import 'package:dart_code_algorithms/dart_examples/avarage.dart';
 import 'package:dart_code_algorithms/dart_examples/capitalize.dart';
 import 'package:dart_code_algorithms/dart_examples/compact.dart';
+import 'package:dart_code_algorithms/dart_examples/compact_white_space.dart';
+import 'package:dart_code_algorithms/dart_examples/decapitalize.dart';
+import 'package:dart_code_algorithms/dart_examples/different_items.dart';
+import 'package:dart_code_algorithms/dart_examples/digitize.dart';
+import 'package:dart_code_algorithms/dart_examples/drop_item.dart';
+import 'package:dart_code_algorithms/dart_examples/factoriel.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -66,11 +72,15 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             TextButton(
               child: Text(
-                (result ?? "İşlem başlat").toString(),
-                style: Theme.of(context).textTheme.headlineMedium,
+                (result ?? "İşlem\nbaşlat").toString(),
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Colors.grey.shade500,
+                    ),
               ),
               onPressed: () {
-                result = compact(items2, param: "b").toString();
+                int number = 4;
+
+                result = factorial(number).toString();
                 setState(() {});
               },
             ),
@@ -79,9 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          result = allEqual(
-            items,
+          result = decapitalize(
+            "dart   ve  \n  Flutter",
           ).toString();
+          result = compactWhiteSpace(result ?? "");
           setState(() {});
         },
         child: const Icon(Icons.add),
