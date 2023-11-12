@@ -1,6 +1,6 @@
 import 'package:dart_code_algorithms/dart_examples/digitize.dart';
 
-String tcVerify(numbers) {
+String tcVerify2(List<int> numbers) {
   var rest = (numbers.sublist(0, 10).reduce(
         (value, element) => value + element,
       )).toString();
@@ -11,27 +11,22 @@ String tcVerify(numbers) {
   }
 }
 
-// TODO t kimlik verify tamamlanaak
-
-String tcVerfyAlternative(numbers) {
-  var convertToNumbers = digitize(numbers);
-  // var forIndexOfIsOdd = [];
-  // var forIndexOfIsEven = [];
-
-  var firstAndSecondNum = convertToNumbers.sublist(0, 1);
-  var rest = convertToNumbers
-      .sublist(0, 10)
-      .reduce((value, element) => value + element)
-      .toString();
-  if (convertToNumbers.last.toString() == rest.split("").last) {
-    if (convertToNumbers.length == 11) {
-      if (firstAndSecondNum.contains(0) != true) {
-        var lastDigit = digitize(numbers).last;
-        if ((int.parse(rest) % 10) == lastDigit) {
-          return "Tc kimlik doğrulamanız yapılmıştır. $numbers";
-        }
-      }
-    }
+bool tcVerify(int numbers) {
+  List<int> convertToNumbers = digitize(numbers);
+  if (convertToNumbers.length != 11) {
+    return false;
   }
-  return "tekrar deneyiniz";
+  bool firstAndSecondNum = convertToNumbers.first == 0;
+  if (firstAndSecondNum) {
+    return false;
+  }
+  int rest = convertToNumbers
+      .sublist(0, 10)
+      .reduce((value, element) => value + element);
+
+  if (convertToNumbers.last == int.parse(rest.toString().split("").last)) {
+    return true;
+  } else {
+    return false;
+  }
 }
