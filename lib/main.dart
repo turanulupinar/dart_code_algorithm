@@ -1,16 +1,28 @@
+import 'dart:developer';
+
 import 'package:dart_code_algorithms/dart_examples/all.dart';
 import 'package:dart_code_algorithms/dart_examples/all_equal.dart';
 import 'package:dart_code_algorithms/dart_examples/avarage.dart';
 import 'package:dart_code_algorithms/dart_examples/capitalize.dart';
 import 'package:dart_code_algorithms/dart_examples/compact.dart';
 import 'package:dart_code_algorithms/dart_examples/digitize.dart';
+import 'package:dart_code_algorithms/dart_examples/distinct_items.dart';
+import 'package:dart_code_algorithms/dart_examples/everyNth.dart';
+import 'package:dart_code_algorithms/dart_examples/have_same_contents.dart';
+import 'package:dart_code_algorithms/dart_examples/initial.dart';
+import 'package:dart_code_algorithms/dart_examples/intersection.dart';
+import 'package:dart_code_algorithms/dart_examples/is_anagram.dart';
+import 'package:dart_code_algorithms/dart_examples/is_include_any.dart';
+import 'package:dart_code_algorithms/dart_examples/list_head.dart';
 import 'package:dart_code_algorithms/dart_examples/tc_verify.dart';
 import 'package:flutter/material.dart';
 
 import 'dart_examples/count_item_to_map.dart';
+import 'dart_examples/drop_item.dart';
 import 'dart_examples/filter_unique_item.dart';
 import 'dart_examples/flatten.dart';
 import 'dart_examples/group_by.dart';
+import 'dart_examples/isIncludeAll.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,33 +75,27 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
-              child: Text(
-                (result ?? "İşlem başlat").toString(),
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              onPressed: () {
-                List list = ["Elma", "Armut", "Çilek", "Avakado", "Muzo"];
-
-                Map res = groupBy(list,
-                    (value) => value.toString().toLowerCase().contains("a"));
-                result = res.toString();
-
-                setState(() {});
-              },
-            ),
+                onPressed: onPressed,
+                child: Text(
+                  (result ?? "İşlem başlat").toString(),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                )),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          List list = ["a", "b", "d", "a", "c", "a", "a", "b", "d"];
-
-          result = countItemToMap(list).toString();
-
-          setState(() {});
-        },
+        onPressed: () => onPressed(),
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  onPressed() {
+    List<String> list = ["Elma", "Armut", "Çilek", "Avakado", "Muz"];
+    List<int> numbers = [1, 2, 3, 5, 6, 7, 5];
+
+    String name = "cinema";
+    result = isAnagram(name, "iceman").toString();
+    setState(() {});
   }
 }
