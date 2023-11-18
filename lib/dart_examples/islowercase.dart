@@ -3,3 +3,7 @@
 bool isLowerCase(String str) {
   return str == str.toLowerCase();
 }
+
+bool isUpperCase(String str) {
+  return str == str.toUpperCase();
+}
