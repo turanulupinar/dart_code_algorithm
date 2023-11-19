@@ -23,6 +23,11 @@ import 'package:dart_code_algorithms/dart_examples/radsToDegrees.dart';
 import 'package:dart_code_algorithms/dart_examples/random_double_in_range.dart';
 import 'package:dart_code_algorithms/dart_examples/random_int_in_range.dart';
 import 'package:dart_code_algorithms/dart_examples/reversed_string.dart';
+import 'package:dart_code_algorithms/dart_examples/slice.dart';
+import 'package:dart_code_algorithms/dart_examples/some.dart';
+import 'package:dart_code_algorithms/dart_examples/split_lines.dart';
+import 'package:dart_code_algorithms/dart_examples/sum.dart';
+import 'package:dart_code_algorithms/dart_examples/symetric_list.dart';
 import 'package:dart_code_algorithms/dart_examples/tc_verify.dart';
 import 'package:flutter/material.dart';
 
@@ -110,11 +115,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  String sentence = "Ben\nher sabah\nkalkar\nve yüzümü\nyıkarım öncelikle";
+
   onPressed() {
     List<String> list = ["Elma", "Armut", "Çilek", "Avakado", "Muz"];
-    List<String> letter = ["a", "b", "c", "a", "b", "a"];
-    String date = "2023/11/18";
-    result = sample(letter).toString();
+    List<String> letters = ["a", "b", "c", "b", "d", "e", "f", "g", "h"];
+    List<int> numbers = [1, 2, 3, 4, 6, 7];
+    List<int> number2 = numbers
+      ..[0]; //listeden doğrudan bir indexe erişmek için
+    log(number2.toString());
+
+    result = symetricDifference([1, 2, 4], numbers).toString();
 
     setState(() {});
   }
