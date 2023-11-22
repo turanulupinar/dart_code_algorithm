@@ -1,5 +1,10 @@
 import 'dart:developer';
 
+import 'package:dart_code_algorithms/dart_examples/truncate.dart';
+import 'package:dart_code_algorithms/dart_examples/union.dart';
+import 'package:dart_code_algorithms/dart_examples/words.dart';
+import 'package:flutter/material.dart';
+
 import 'package:dart_code_algorithms/dart_examples/all.dart';
 import 'package:dart_code_algorithms/dart_examples/all_equal.dart';
 import 'package:dart_code_algorithms/dart_examples/avarage.dart';
@@ -29,7 +34,6 @@ import 'package:dart_code_algorithms/dart_examples/split_lines.dart';
 import 'package:dart_code_algorithms/dart_examples/sum.dart';
 import 'package:dart_code_algorithms/dart_examples/symetric_list.dart';
 import 'package:dart_code_algorithms/dart_examples/tc_verify.dart';
-import 'package:flutter/material.dart';
 
 import 'dart_examples/count_item_to_map.dart';
 import 'dart_examples/drop_item.dart';
@@ -115,18 +119,71 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  String sentence = "Ben\nher sabah\nkalkar\nve yüzümü\nyıkarım öncelikle";
-
   onPressed() {
-    List<String> list = ["Elma", "Armut", "Çilek", "Avakado", "Muz"];
+    String sentence =
+        "Ben\nher sabah\nkalkar\nve % #  2 adet yüzümü\nyıkarım öncelikle";
+    List<String> list = ["Elma", "Armut", "Çilek", "Avakado meyvesi", "Muz"];
     List<String> letters = ["a", "b", "c", "b", "d", "e", "f", "g", "h"];
-    List<int> numbers = [1, 2, 3, 4, 6, 7];
-    List<int> number2 = numbers
-      ..[0]; //listeden doğrudan bir indexe erişmek için
-    log(number2.toString());
+    List<Map<String, dynamic>> numbers = [
+      {"x": 12},
+      {"y": 13},
+      {"x": 14},
+      {"y": 11},
+      {"z": 33}
+    ];
 
-    result = symetricDifference([1, 2, 4], numbers).toString();
+    List<Map<String, dynamic>> numbers2 = [
+      {"x": 2},
+      {"y": 3},
+      {"x": 4},
+      {"y": 12},
+      {"z": 16}
+    ];
+
+    result = words(sentence.replaceAll("\n", " ")).toString();
 
     setState(() {});
   }
 }
+
+
+
+
+
+
+
+//   onPressed() {
+ 
+//     Student student2;
+//     var student = Student(
+//         name: "Fahri",
+//         surname: "Dursun",
+//         classroom: 3,
+//         lesson: Lesson("ders yapıldı"));
+
+//      student2 = student..name = "Ahmet";
+
+//     result = name.toString();
+
+//     setState(() {});
+//   }
+// class Student {
+//   String? name;
+//   String? surname;
+//   int? classroom;
+//   Lesson? lesson;
+//   Student({this.name, this.surname, this.classroom, this.lesson});
+
+//   @override
+//   String toString() {
+//     return 'Student(name: $name, surname: $surname, classroom: $classroom, lesson: $lesson)';
+//   }
+// }
+
+// class Lesson {
+//   String? turkce;
+//   Lesson(this.turkce);
+
+//   @override
+//   String toString() => 'Lesson(turkce: $turkce)';
+// }
