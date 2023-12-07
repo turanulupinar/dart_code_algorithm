@@ -1,50 +1,7 @@
-import 'dart:developer';
-
-import 'package:dart_code_algorithms/dart_examples/truncate.dart';
-import 'package:dart_code_algorithms/dart_examples/union.dart';
+import 'package:dart_code_algorithms/dart_examples/compact_white_space.dart';
 import 'package:dart_code_algorithms/dart_examples/words.dart';
 import 'package:flutter/material.dart';
-
-import 'package:dart_code_algorithms/dart_examples/all.dart';
-import 'package:dart_code_algorithms/dart_examples/all_equal.dart';
-import 'package:dart_code_algorithms/dart_examples/avarage.dart';
-import 'package:dart_code_algorithms/dart_examples/capitalize.dart';
-import 'package:dart_code_algorithms/dart_examples/compact.dart';
-import 'package:dart_code_algorithms/dart_examples/digitize.dart';
-import 'package:dart_code_algorithms/dart_examples/distinct_items.dart';
-import 'package:dart_code_algorithms/dart_examples/everyNth.dart';
-import 'package:dart_code_algorithms/dart_examples/have_same_contents.dart';
-import 'package:dart_code_algorithms/dart_examples/initial.dart';
-import 'package:dart_code_algorithms/dart_examples/intersection.dart';
-import 'package:dart_code_algorithms/dart_examples/is_anagram.dart';
-import 'package:dart_code_algorithms/dart_examples/is_include_any.dart';
-import 'package:dart_code_algorithms/dart_examples/list_head.dart';
-import 'package:dart_code_algorithms/dart_examples/map_list.dart';
-import 'package:dart_code_algorithms/dart_examples/map_string.dart';
-import 'package:dart_code_algorithms/dart_examples/max.dart';
-import 'package:dart_code_algorithms/dart_examples/most_frequent.dart';
-import 'package:dart_code_algorithms/dart_examples/none.dart';
-import 'package:dart_code_algorithms/dart_examples/radsToDegrees.dart';
-import 'package:dart_code_algorithms/dart_examples/random_double_in_range.dart';
-import 'package:dart_code_algorithms/dart_examples/random_int_in_range.dart';
-import 'package:dart_code_algorithms/dart_examples/reversed_string.dart';
-import 'package:dart_code_algorithms/dart_examples/slice.dart';
-import 'package:dart_code_algorithms/dart_examples/some.dart';
-import 'package:dart_code_algorithms/dart_examples/split_lines.dart';
-import 'package:dart_code_algorithms/dart_examples/sum.dart';
-import 'package:dart_code_algorithms/dart_examples/symetric_list.dart';
-import 'package:dart_code_algorithms/dart_examples/tc_verify.dart';
-
-import 'dart_examples/count_item_to_map.dart';
-import 'dart_examples/drop_item.dart';
-import 'dart_examples/filter_unique_item.dart';
-import 'dart_examples/flatten.dart';
-import 'dart_examples/group_by.dart';
-import 'dart_examples/is_include_all.dart';
-import 'dart_examples/last.dart';
-import 'dart_examples/mask.dart';
-import 'dart_examples/random_listint_in_range.dart';
-import 'dart_examples/sample_item_from_list.dart';
+import '../extension/extensions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -120,27 +77,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onPressed() {
-    String sentence =
-        "Ben\nher sabah\nkalkar\nve % #  2 adet yüzümü\nyıkarım öncelikle";
-    List<String> list = ["Elma", "Armut", "Çilek", "Avakado meyvesi", "Muz"];
-    List<String> letters = ["a", "b", "c", "b", "d", "e", "f", "g", "h"];
-    List<Map<String, dynamic>> numbers = [
-      {"x": 12},
-      {"y": 13},
-      {"x": 14},
-      {"y": 11},
-      {"z": 33}
-    ];
+    // List<int> list = [1, 2, 3, 4, 5];
 
-    List<Map<String, dynamic>> numbers2 = [
-      {"x": 2},
-      {"y": 3},
-      {"x": 4},
-      {"y": 12},
-      {"z": 16}
-    ];
+    // List<String> list2 = [];
 
-    result = words(sentence.replaceAll("\n", " ")).toString();
+    // for (int i = 0; i < list.length; i++) {
+    //   list2.add(list[i].numberToName);
+    // }
+    Status status = Status.success;
+
+    result = status.translateStatus("fr");
 
     setState(() {});
   }
@@ -149,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-
+ 
 
 
 //   onPressed() {
