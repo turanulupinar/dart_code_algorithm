@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dart_code_algorithms/dart_examples/compact_white_space.dart';
+import 'package:dart_code_algorithms/dart_examples/list_squared.dart';
 import 'package:dart_code_algorithms/dart_examples/words.dart';
 import 'package:flutter/material.dart';
 import '../extension/extensions.dart';
@@ -84,9 +87,15 @@ class _MyHomePageState extends State<MyHomePage> {
     // for (int i = 0; i < list.length; i++) {
     //   list2.add(list[i].numberToName);
     // }
-    Status status = Status.success;
 
-    result = status.translateStatus("fr");
+    //------------
+    // Status status = Status.success;
+
+    // result = status.translateStatus("fr");
+
+    List<int> numbers = [12, 23, 4, 5, 6, 35324];
+
+    result = evenNumbersList(numbers).toString();
 
     setState(() {});
   }
