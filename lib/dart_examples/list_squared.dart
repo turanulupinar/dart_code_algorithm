@@ -47,7 +47,7 @@ Iterable<int> evenNumbersList(List<int> lst) {
   return evenNumbers;
 }
 
-// -  İki boyutlu bir liste verildiğinde, her bir satırdaki en büyük elemanı bulan ve bu elemanları
+// -  İki boyutlu bir liste verildiğinde, her bir satırdaki en büyük elemanı bulan ve bu elemanları  ----
 //içeren bir liste döndüren bir Dart fonksiyonu yazın.
 
 

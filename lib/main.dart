@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:dart_code_algorithms/dart_examples/compact_white_space.dart';
 import 'package:dart_code_algorithms/dart_examples/list_squared.dart';
+import 'package:dart_code_algorithms/dart_examples/type_map.dart';
 import 'package:dart_code_algorithms/dart_examples/words.dart';
+import 'package:dart_code_algorithms/profile_info.dart/profile_ui.dart';
 import 'package:flutter/material.dart';
 import '../extension/extensions.dart';
 
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Dart Code Algorithm Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -36,6 +39,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<String> sports = ['kriket', 'futbol', 'tenis', 'beyzbol'];
+  var mixList = [1, "a", 2, "b", 3, "c", 4, "d"];
   String? result;
   List<num> items = [5, 5, 5, 5, 5];
   List<dynamic> items2 = [
@@ -50,6 +55,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProfileInfo()));
+              },
+              child: const Text("profile"))
+        ],
         title: const Text("Code Algorithms"),
       ),
       body: Center(
@@ -80,23 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onPressed() {
-    // List<int> list = [1, 2, 3, 4, 5];
-
-    // List<String> list2 = [];
-
-    // for (int i = 0; i < list.length; i++) {
-    //   list2.add(list[i].numberToName);
-    // }
-
-    //------------
-    // Status status = Status.success;
-
-    // result = status.translateStatus("fr");
-
-    List<int> numbers = [12, 23, 4, 5, 6, 35324];
-
-    result = evenNumbersList(numbers).toString();
-
+    result = intOutput(mixList, String).toString();
     setState(() {});
   }
 }
