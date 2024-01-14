@@ -43,4 +43,9 @@ class UserInfoModel {
 
     return json;
   }
+
+  @override
+  String toString() {
+    return 'UserInfoModel(userId: $userId, name: $name, surname: $surname, email: $email, phone: $phone, city: $city)';
+  }
 }
