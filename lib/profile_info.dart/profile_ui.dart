@@ -10,11 +10,18 @@ class ProfileInfo extends StatefulWidget {
 }
 
 class _ProfileInfoState extends State<ProfileInfo> {
-  final UserInfoModel userModel = UserInfoModel();
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  UserInfoModel? userModel;
   final SharedPreferancesDataMethods _pref = SharedPreferancesDataMethods();
 
-  init()async{
-    userModel = _pref.sharedWriteData("user_info", userModel)
+  init() async {
+    userModel = UserInfoModel.fromJson(user);
+    setState(() {});
   }
 
   @override
@@ -26,10 +33,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
       body: Column(
         children: [
           ListTile(
-            title: Text(userModel.name ?? ""),
-            leading: Text(userModel.id.toString()),
-            subtitle: Text(userModel.surname ?? ""),
-            trailing: Text(userModel.city ?? ""),
+            title: Text(userModel?.name ?? "asd"),
+            leading: Text(userModel?.userId.toString() ?? "sadas"),
+            subtitle: Text(userModel?.surname ?? "asd"),
+            trailing: Text(userModel?.city ?? "aasdsd"),
           )
         ],
       ),

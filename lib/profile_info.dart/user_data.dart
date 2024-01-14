@@ -1,5 +1,5 @@
 Map<String, dynamic> user = {
-  "user_id": "11",
+  "user_id": 11,
   "name": "Hasan",
   "surname": "Akdemir",
   "email": "mail@gmail.com",
@@ -8,14 +8,14 @@ Map<String, dynamic> user = {
 };
 
 class UserInfoModel {
-  int? id;
+  int? userId;
   String? name;
   String? surname;
   String? email;
   String? phone;
   String? city;
   UserInfoModel({
-    this.id,
+    this.userId,
     this.name,
     this.surname,
     this.email,
@@ -24,7 +24,7 @@ class UserInfoModel {
   });
 
   UserInfoModel.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
+    userId = json["user_id"];
     name = json["name"];
     surname = json["surname"];
     email = json["email"];
@@ -34,7 +34,7 @@ class UserInfoModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
-    json["id"] = id;
+    json["user_id"] = userId;
     json["name"] = name;
     json["surname"] = name;
     json["email"] = name;
@@ -44,5 +44,3 @@ class UserInfoModel {
     return json;
   }
 }
-
-

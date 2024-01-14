@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   onPressed() {
-    result = intOutput(mixList, String).toString();
+    result = listAddData(sports, "basketbol").toString();
     setState(() {});
   }
 }
