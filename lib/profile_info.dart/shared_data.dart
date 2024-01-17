@@ -15,7 +15,9 @@ class SharedPreferancesDataMethods {
 
   Future<bool> saveUserListData(List<String> value) async {
     final pref = await sharedInit();
+    
     return pref.setStringList(userInfoKey, value);
+
   }
 
   Future<List<String?>?> getUserListData() async {
