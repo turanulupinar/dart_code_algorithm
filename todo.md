@@ -13,18 +13,10 @@
 //   oradan kullanılmasını sağlayın.(seperation of concern) ?
 
 // * Sil butonunun yanında bir güncelle butonu ekleyin. Ve hali hazırdaki satırı güncelleme imkanını
-//   kullanıcılara sağlayın. (CRUD)   ?
+//   kullanıcılara sağlayın. (CRUD)   +
 
 // * Yeni bir kullanıcı ekleme özelliğinde boş veya aynı kullanıcılar eklenebiliyor. Örneğin telefon rehberi uygulamasında
 //   ben bir kullanıcıyı kaydederken yanı isimde birisi zaten var uyarısı alıyorum. Burada da aynı isim ve soyisimde
-//   bir kullanıcı varsa "Zaten bu kullanıcı kayıtlı" uyarısı versin  (Safety Data)   ?
+//   bir kullanıcı varsa "Zaten bu kullanıcı kayıtlı" uyarısı versin  (Safety Data)   ?+
 
 // * Cityi kendisi el ile yazmasın. Dropdown widgetı ile secsin. Yukarıda city listesini kullanarak.   +?
-
-
-// TODO:3
-// update user page sayfasında kullanıcılar güncellensin
-// Eğer aynı kullanıcı adında biri varsa, bu isimde zaten kayıtlı birisi var. 
-// Güncelle yapılamaz! uyarısı versin kullanıcı güncellenirken.
-// Eğer kullanıcı bilgilerinde bir değişiklik yapılırsa güncelle butonu cıksın
-// değişiklik yapılmaz ise kapat butonu cıksın

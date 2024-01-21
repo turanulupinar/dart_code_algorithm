@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../custom_widgets/custom_show_dialog.dart';
 import '../custom_widgets/custom_text_form_field.dart';
 
 class ProfileInfo extends StatefulWidget {
@@ -115,9 +116,17 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     tileColor: index.isEven
                         ? Colors.grey.shade300
                         : Colors.grey.shade100,
-                    title: Text(item?.name ?? "null"),
+                    title: Text("${item?.name} ${item?.surname}"),
                     leading: Text(item?.userId.toString() ?? "null"),
-                    subtitle: Text(item?.surname ?? "null"),
+                    subtitle: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Email: ${item?.surname}"),
+                        Text("Tel: ${item?.phone}"),
+                        Text("Şehir:${item?.city}"),
+                      ],
+                    ),
                     trailing: SizedBox(
                       width: 150,
                       height: 40,
@@ -134,15 +143,27 @@ class _ProfileInfoState extends State<ProfileInfo> {
                               ],
                             ),
                             onPressed: () async {
-                              userModelList?[index] = UserInfoModel(
-                                  name: nameController.text,
-                                  surname: surnameController.text,
-                                  city: cityController.text,
-                                  email: mailController.text,
-                                  phone: phoneController.text,
-                                  userId: int.tryParse(idController.text));
-                              setState(() {});
-                              saveUserModelData();
+                              // userModelList?[index] = UserInfoModel(
+                              //     name: nameController.text,
+                              //     surname: surnameController.text,
+                              //     city: cityController.text,
+                              //     email: mailController.text,
+                              //     phone: phoneController.text,
+                              //     userId: int.tryParse(idController.text));
+
+                              // setState(() {});
+                              // saveUserModelData();
+
+                              if (userModelList?[index] != null) {
+                                final updatedUser = await MyUserAddDialog()
+                                    .showMyUpdateUserDialog(
+                                        context, userModelList![index]!);
+                                log(updatedUser.toString());
+
+                                userModelList![index] = updatedUser;
+                                await saveUserModelData();
+                                setState(() {});
+                              }
                             },
                           ),
                           TextButton(
@@ -168,139 +189,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
               padding: const EdgeInsets.symmetric(horizontal: 33),
               child: ElevatedButton.icon(
                   onPressed: () async {
-                    userModelList = await showDialog<List<UserInfoModel?>?>(
-                        barrierDismissible: false,
-                        barrierColor: const Color.fromARGB(136, 63, 62, 62),
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text("kullanıcı ekle"),
-                            content: SizedBox(
-                              child: Form(
-                                key: _formKey,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      CustomTextFormField(
-                                        keywordtype: TextInputType.number,
-                                        title: "Numara",
-                                        textController: idController,
-                                      ),
-                                      CustomTextFormField(
-                                        // val: (nameVal) {
-                                        //   if (nameVal?.isEmpty == true) {
-                                        //     "boş değer girmeyin";
-                                        //   }
-                                        //   return null;
-                                        // },
-                                        title: "adı",
-                                        textController: nameController,
-                                      ),
-                                      CustomTextFormField(
-                                        title: "Soyadı",
-                                        textController: surnameController,
-                                        val: (surVal) {
-                                          if (surVal?.isEmpty == true) {
-                                            "boş değer girmeyin";
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      CustomTextFormField(
-                                        title: "e posta",
-                                        // val: (mailVal) {
-                                        //   if (mailVal?.contains("@") == false ||
-                                        //       mailVal?.contains(".com") == false) {
-                                        //     return "E-Mail adresinizi kontrol edin";
-                                        //   }
-                                        //   return null;
-                                        // },
-                                        textController: mailController,
-                                      ),
-                                      CustomTextFormField(
-                                        helperText: "550 555 5555",
-                                        title: "telefon",
-                                        // val: (phoneVal) {
-                                        //   if (phoneVal?.split("").length != 10) {
-                                        //     return "telefon numarasını kontrol edin";
-                                        //   }
-                                        //   return null;
-                                        // },
-                                        textController: phoneController,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(defaultDropDownMenuItem
-                                              .toString()),
-                                          CustomDropDownMenu(
-                                            dropDownVal:
-                                                defaultDropDownMenuItem,
-                                            items: city,
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      ElevatedButton.icon(
-                                          onPressed: () async {
-                                            if (nameController.text.isEmpty ||
-                                                surnameController
-                                                    .text.isEmpty) {
-                                              await Fluttertoast.showToast(
-                                                  msg: "Boş değer girmeyin",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.CENTER,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor: Colors.red,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0);
-
-                                              return;
-                                            }
-
-                                            if (_formKey.currentState
-                                                    ?.validate() ==
-                                                false) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                    content: Text('hata')),
-                                              );
-                                              return;
-                                            }
-
-                                            return await getUserModelData()
-                                                .then((val) => Navigator.pop(
-                                                    context, val));
-                                          },
-                                          icon: const Icon(
-                                              Icons.account_circle_rounded),
-                                          label: const Text("kaydet"))
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        });
-
+                    userModelList =
+                        await MyUserAddDialog().showMyUserAddDialog(context) ??
+                            userModelList;
                     setState(() {});
-                    // setState(() {
-                    //   isSaved = false;
-                    // });
-                    // await Future.delayed(const Duration(seconds: 1));
-
-                    // List<String> userlist = userModelList
-                    //         ?.map((e) => jsonEncode(e?.toJson()))
-                    //         .toList() ??
-                    //     [];
-                    // final res = await _pref.saveUserListData(userlist);
-                    // await getUserData();
-                    // setState(() {
-                    //   isSaved = res;
-                    // });
                   },
                   icon: isSaved == false
                       ? const SizedBox(

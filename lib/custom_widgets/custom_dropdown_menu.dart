@@ -1,34 +1,30 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
-class CustomDropDownMenu<T> extends StatelessWidget {
-  const CustomDropDownMenu({super.key, this.items, required this.dropDownVal});
+class CustomDropDownMenu<String> extends StatelessWidget {
+  const CustomDropDownMenu({super.key, this.items, required this.dropDownVal, required this.onChanged});
 
-  final List<Map<T, String>?>? items;
+  final List<String?>? items;
 
-  final T dropDownVal;
-
+  final String? dropDownVal;
+  final Function(String?) onChanged;
   @override
   Widget build(BuildContext context) {
+    var dropDownVal = this.dropDownVal;
     return StatefulBuilder(builder: ((context, setState) {
-      T dropDownValue = this.dropDownVal;
-
       return DropdownButtonHideUnderline(
           child: DropdownButton(
+              value: dropDownVal,
               items: items
-                  ?.map((e) => DropdownMenuItem<T>(
-                        value: e?.keys.first,
-                        child: Text(e?.values.first ?? ""),
+                  ?.map((e) => DropdownMenuItem<String>(
+                        value: e,
+                        child: Text(e.toString()),
                       ))
                   .toList(),
-              onChanged: (T? value) {
-                if (value == null) {
-                  return;
-                }
-                log(dropDownValue.toString());
-                dropDownValue = value;
-                setState(() {});
+              onChanged: (String? value) {
+                onChanged(value);
+                setState(() {
+                  dropDownVal = value;
+                });
               }));
     }));
   }
