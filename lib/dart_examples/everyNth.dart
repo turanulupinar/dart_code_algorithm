@@ -1,3 +1,6 @@
+
+
+
 // verdiğimiz iteme göre liste dönderen program
 
 List<T> everyNth<T>(List<T> list, int nth) {
