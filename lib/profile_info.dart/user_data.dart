@@ -36,10 +36,10 @@ class UserInfoModel {
     final Map<String, dynamic> json = <String, dynamic>{};
     json["user_id"] = userId;
     json["name"] = name;
-    json["surname"] = name;
-    json["email"] = name;
-    json["phone"] = name;
-    json["city"] = name;
+    json["surname"] = surname;
+    json["email"] = email;
+    json["phone"] = phone;
+    json["city"] = city;
 
     return json;
   }

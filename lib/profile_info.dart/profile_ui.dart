@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dart_code_algorithms/custom_widgets/custom_dropdown_menu.dart';
 import 'package:dart_code_algorithms/profile_info.dart/shared_data.dart';
 import 'package:dart_code_algorithms/profile_info.dart/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../custom_widgets/custom_text_form_field.dart';
 
@@ -40,6 +42,8 @@ class _ProfileInfoState extends State<ProfileInfo> {
     return userModelList;
   }
 
+  String? defaultDropDownMenuItem = "mersin";
+
   @override
   void initState() {
     getUserData();
@@ -62,6 +66,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
             ?.map((userModel) => jsonEncode(userModel?.toJson()))
             .toList() ??
         [];
+
     await _pref.saveUserListData(newUserList);
     return userModelList;
   }
@@ -129,7 +134,15 @@ class _ProfileInfoState extends State<ProfileInfo> {
                               ],
                             ),
                             onPressed: () async {
-                              // item güncelleme
+                              userModelList?[index] = UserInfoModel(
+                                  name: nameController.text,
+                                  surname: surnameController.text,
+                                  city: cityController.text,
+                                  email: mailController.text,
+                                  phone: phoneController.text,
+                                  userId: int.tryParse(idController.text));
+                              setState(() {});
+                              saveUserModelData();
                             },
                           ),
                           TextButton(
@@ -215,23 +228,38 @@ class _ProfileInfoState extends State<ProfileInfo> {
                                         // },
                                         textController: phoneController,
                                       ),
-                                      CustomTextFormField(
-                                        title: "şehir",
-                                        textController: cityController,
-                                        // val: (cityVal) {
-                                        //   if (city.contains(cityController.text
-                                        //           .toLowerCase()) ==
-                                        //       false) {
-                                        //     return "şehir adını doğru giriniz";
-                                        //   }
-                                        //   return null;
-                                        // },
+                                      Row(
+                                        children: [
+                                          Text(defaultDropDownMenuItem
+                                              .toString()),
+                                          CustomDropDownMenu(
+                                            dropDownVal:
+                                                defaultDropDownMenuItem,
+                                            items: city,
+                                          )
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 20,
                                       ),
                                       ElevatedButton.icon(
                                           onPressed: () async {
+                                            if (nameController.text.isEmpty ||
+                                                surnameController
+                                                    .text.isEmpty) {
+                                              await Fluttertoast.showToast(
+                                                  msg: "Boş değer girmeyin",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.CENTER,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Colors.red,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0);
+
+                                              return;
+                                            }
+
                                             if (_formKey.currentState
                                                     ?.validate() ==
                                                 false) {
@@ -294,31 +322,11 @@ class _ProfileInfoState extends State<ProfileInfo> {
   }
 }
 
-// TODO
-// Bir pop up veya yeni sayfa açılsın. Ve o sayfada bizim usermodelimize göre bir textformfield alanı
-//olsun. girilen bilgilerden sonra listeye bu son girilen kişi eklensin. Sonra popup kapanınca veya
-// sayfadan geri gelince güncel veriler getirilsin. Ama bu güncel verilen hemen gelmesin.
-// 2 saniye sonra loadingten sonra gelsin
-
-List<String> city = [
-  "adana",
-  "ankara",
-  "mersin",
-  "elazığ",
-  "adıyaman",
-  "konya"
+List<Map<int, String>> city = [
+  {01: "adana"},
+  {02: "ankara"},
+  {03: "mersin"},
+  {04: "elazığ"},
+  {05: "adıyaman"},
+  {06: "konya"}
 ];
-
-
-//TODO
-// * showDialog feature adında bir klasör içerisine alınıp içerisinde ayrı bir dart dosyası oluşturularak
-//   oradan kullanılmasını sağlayın.(seperation of concern)
-
-// * Sil butonunun yanında bir güncelle butonu ekleyin. Ve hali hazırdaki satırı güncelleme imkanını
-//   kullanıcılara sağlayın. (CRUD)
-
-// * Yeni bir kullanıcı ekleme özelliğinde boş veya aynı kullanıcılar eklenebiliyor. Örneğin telefon rehberi uygulamasında
-//   ben bir kullanıcıyı kaydederken yanı isimde birisi zaten var uyarısı alıyorum. Burada da aynı isim ve soyisimde
-//   bir kullanıcı varsa "Zaten bu kullanıcı kayıtlı" uyarısı versin  (Safety Data)  
-
-// * Cityi kendisi el ile yazmasın. Dropdown widgetı ile secsin. Yukarıda city listesini kullanarak.
