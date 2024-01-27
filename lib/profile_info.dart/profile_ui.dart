@@ -1,15 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dart_code_algorithms/custom_widgets/custom_dropdown_menu.dart';
 import 'package:dart_code_algorithms/profile_info.dart/shared_data.dart';
+import 'package:dart_code_algorithms/profile_info.dart/update_user_page.dart';
 import 'package:dart_code_algorithms/profile_info.dart/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../custom_widgets/custom_show_dialog.dart';
-import '../custom_widgets/custom_text_form_field.dart';
 
 class ProfileInfo extends StatefulWidget {
   const ProfileInfo({super.key});
@@ -24,14 +22,15 @@ class _ProfileInfoState extends State<ProfileInfo> {
   TextEditingController surnameController = TextEditingController();
   TextEditingController mailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
+  
+  
 
-  final _formKey = GlobalKey<FormState>();
   bool? isSaved;
 
   List<UserInfoModel?>? userModelList;
 
   final SharedPreferancesDataMethods _pref = SharedPreferancesDataMethods();
+ 
 
   Future<List<UserInfoModel?>?> getUserData() async {
     List<String?>? data = await _pref.getUserListData();
@@ -48,29 +47,32 @@ class _ProfileInfoState extends State<ProfileInfo> {
   @override
   void initState() {
     getUserData();
+
     // _pref.deleteUserData();
     super.initState();
   }
 
-  Future<List<UserInfoModel?>?> getUserModelData() async {
-    UserInfoModel userModel = UserInfoModel(
-        name: nameController.text,
-        surname: surnameController.text,
-        userId: int.tryParse(idController.text),
-        city: cityController.text,
-        email: mailController.text,
-        phone: phoneController.text);
+  // şimdilik işimize yaramıyor...............
 
-    // String newUser = jsonEncode(userModel.toJson());
-    userModelList?.add(userModel);
-    List<String> newUserList = userModelList
-            ?.map((userModel) => jsonEncode(userModel?.toJson()))
-            .toList() ??
-        [];
+  // Future<List<UserInfoModel?>?> getUserModelData() async {
+  //   UserInfoModel userModel = UserInfoModel(
+  //       name: nameController.text,
+  //       surname: surnameController.text,
+  //       userId: int.tryParse(idController.text),
+  //       city: cityController.text,
+  //       email: mailController.text,
+  //       phone: phoneController.text);
 
-    await _pref.saveUserListData(newUserList);
-    return userModelList;
-  }
+  //   // String newUser = jsonEncode(userModel.toJson());
+  //   userModelList?.add(userModel);
+  //   List<String> newUserList = userModelList
+  //           ?.map((userModel) => jsonEncode(userModel?.toJson()))
+  //           .toList() ??
+  //       [];
+
+  //   await _pref.saveUserListData(newUserList);
+  //   return userModelList;
+  // }
 
   Future<List<UserInfoModel?>?> saveUserModelData() async {
     List<String> newUserList = userModelList
@@ -105,7 +107,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 textAlign: TextAlign.center,
               ),
             ...List.generate(userModelList?.length ?? 0, (index) {
-              final item = userModelList?[index];
+              final  item = userModelList?[index];
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
@@ -143,6 +145,24 @@ class _ProfileInfoState extends State<ProfileInfo> {
                               ],
                             ),
                             onPressed: () async {
+                              if (userModelList?[index] != null) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UpdateUserPage(
+                                      
+                                              username:
+                                                  item?.surname.toString(),
+                                              name: item?.name.toString(),
+                                              id: int.tryParse(
+                                                  item?.userId.toString() ??
+                                                      ""),
+                                              email: item?.email.toString(),
+                                              phone: item?.phone.toString(),
+                                              city: item?.city.toString(),
+                                            )));
+                              }
+
                               // userModelList?[index] = UserInfoModel(
                               //     name: nameController.text,
                               //     surname: surnameController.text,
@@ -154,16 +174,19 @@ class _ProfileInfoState extends State<ProfileInfo> {
                               // setState(() {});
                               // saveUserModelData();
 
-                              if (userModelList?[index] != null) {
-                                final updatedUser = await MyUserAddDialog()
-                                    .showMyUpdateUserDialog(
-                                        context, userModelList![index]!);
-                                log(updatedUser.toString());
+                              // ------------------------------
 
-                                userModelList![index] = updatedUser;
-                                await saveUserModelData();
-                                setState(() {});
-                              }
+                              // if (userModelList?[index] != null) {
+                              //   final updatedUser = await MyUserAddDialog()
+                              //       .showMyUpdateUserDialog(
+                              //           context, userModelList![index]!);
+                              //   log(updatedUser.toString());
+
+                              //   userModelList![index] = updatedUser;
+                              //   await saveUserModelData();
+                              //   setState(() {});
+                              //   log(updatedUser.toString());
+                              // }
                             },
                           ),
                           TextButton(

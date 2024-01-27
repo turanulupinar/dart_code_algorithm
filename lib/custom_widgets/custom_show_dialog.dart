@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dart_code_algorithms/profile_info.dart/profile_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -15,8 +14,9 @@ class MyUserAddDialog {
 
   Future<List<UserInfoModel?>?> showMyUserAddDialog(
       BuildContext context) async {
+        
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    List<UserInfoModel?>? userModelList = [];
+    List<UserInfoModel?>? userModelList;
     TextEditingController idController = TextEditingController();
     TextEditingController nameController = TextEditingController();
     TextEditingController surnameController = TextEditingController();
@@ -183,8 +183,12 @@ class MyUserAddDialog {
         });
   }
 
+  // güncelleme sayfası için direkt olarak popup kullanıdğımız için tek bir popup'ı 2
+  // farklı senaryoda kullandık. bu senaryo kişileri güncellemek için kullanılır.
+
   Future<UserInfoModel?> showMyUpdateUserDialog(
       BuildContext context, UserInfoModel model) async {
+   
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     TextEditingController idController =

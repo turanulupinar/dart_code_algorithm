@@ -20,3 +20,14 @@
 //   bir kullanıcı varsa "Zaten bu kullanıcı kayıtlı" uyarısı versin  (Safety Data)   ?+
 
 // * Cityi kendisi el ile yazmasın. Dropdown widgetı ile secsin. Yukarıda city listesini kullanarak.   +?
+
+
+// TODO:3
+// update user page sayfasında kullanıcılar güncellensin
+// Eğer aynı kullanıcı adında biri varsa, bu isimde zaten kayıtlı birisi var. 
+// Güncelle yapılamaz! uyarısı versin kullanıcı güncellenirken.
+// Eğer kullanıcı bilgilerinde bir değişiklik yapılırsa güncelle butonu cıksın
+// değişiklik yapılmaz ise kapat butonu cıksın
+
+
+not: sayfalar arası modelden veri aktarımı durumunu mediumda makale olarak yaz

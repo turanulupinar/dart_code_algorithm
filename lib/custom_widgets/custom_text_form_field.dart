@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
       this.val,
       this.textController,
       this.maxLenght,
+      this.oneEditingComplate,
       this.keywordtype,
       this.helperText});
   final String title;
@@ -15,15 +16,21 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLenght;
   final String? helperText;
   final TextInputType? keywordtype;
+  final void Function()? oneEditingComplate;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       maxLength: maxLenght,
       controller: textController,
-      decoration: InputDecoration(hintText: title, helperText: helperText),
+      decoration: InputDecoration(
+        hintText: title,
+        helperText: helperText,
+      ),
       validator: val,
+      onEditingComplete: oneEditingComplate,
       keyboardType: keywordtype,
+     
     );
   }
 }

@@ -15,9 +15,8 @@ class SharedPreferancesDataMethods {
 
   Future<bool> saveUserListData(List<String> value) async {
     final pref = await sharedInit();
-    
-    return pref.setStringList(userInfoKey, value);
 
+    return pref.setStringList(userInfoKey, value);
   }
 
   Future<List<String?>?> getUserListData() async {
@@ -45,9 +44,4 @@ class SharedPreferancesDataMethods {
     final pref = await sharedInit();
     return pref.getString(key) ?? "";
   }
-
-  // void sharedModelListSaveData() async {
-  //   final pref = await sharedInit();
-  //   return pref.
-  // }
 }
