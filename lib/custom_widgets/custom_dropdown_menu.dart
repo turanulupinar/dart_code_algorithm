@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomDropDownMenu<String> extends StatelessWidget {
-  const CustomDropDownMenu({super.key, this.items, required this.dropDownVal, required this.onChanged});
+  const CustomDropDownMenu(
+      {super.key,
+      this.items,
+      required this.dropDownVal,
+      required this.onChanged});
 
   final List<String?>? items;
 
