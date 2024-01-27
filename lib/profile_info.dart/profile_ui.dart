@@ -22,15 +22,12 @@ class _ProfileInfoState extends State<ProfileInfo> {
   TextEditingController surnameController = TextEditingController();
   TextEditingController mailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  
-  
 
   bool? isSaved;
 
   List<UserInfoModel?>? userModelList;
 
   final SharedPreferancesDataMethods _pref = SharedPreferancesDataMethods();
- 
 
   Future<List<UserInfoModel?>?> getUserData() async {
     List<String?>? data = await _pref.getUserListData();
@@ -107,7 +104,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                 textAlign: TextAlign.center,
               ),
             ...List.generate(userModelList?.length ?? 0, (index) {
-              final  item = userModelList?[index];
+              final UserInfoModel? item = userModelList?[index];
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
@@ -124,7 +121,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Email: ${item?.surname}"),
+                        Text("Email: ${item?.email}"),
                         Text("Tel: ${item?.phone}"),
                         Text("Şehir:${item?.city}"),
                       ],
@@ -145,48 +142,20 @@ class _ProfileInfoState extends State<ProfileInfo> {
                               ],
                             ),
                             onPressed: () async {
-                              if (userModelList?[index] != null) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => UpdateUserPage(
-                                      
-                                              username:
-                                                  item?.surname.toString(),
-                                              name: item?.name.toString(),
-                                              id: int.tryParse(
-                                                  item?.userId.toString() ??
-                                                      ""),
-                                              email: item?.email.toString(),
-                                              phone: item?.phone.toString(),
-                                              city: item?.city.toString(),
-                                            )));
+                              if (item != null) {
+                                final UserInfoModel result =
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                UpdateUserPage(
+                                                  userModel: item,
+                                                )));
+                                userModelList?[index] = result;
+
+                                await saveUserModelData();
+                                setState(() {});
                               }
-
-                              // userModelList?[index] = UserInfoModel(
-                              //     name: nameController.text,
-                              //     surname: surnameController.text,
-                              //     city: cityController.text,
-                              //     email: mailController.text,
-                              //     phone: phoneController.text,
-                              //     userId: int.tryParse(idController.text));
-
-                              // setState(() {});
-                              // saveUserModelData();
-
-                              // ------------------------------
-
-                              // if (userModelList?[index] != null) {
-                              //   final updatedUser = await MyUserAddDialog()
-                              //       .showMyUpdateUserDialog(
-                              //           context, userModelList![index]!);
-                              //   log(updatedUser.toString());
-
-                              //   userModelList![index] = updatedUser;
-                              //   await saveUserModelData();
-                              //   setState(() {});
-                              //   log(updatedUser.toString());
-                              // }
                             },
                           ),
                           TextButton(
