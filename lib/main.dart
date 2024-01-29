@@ -2,6 +2,8 @@ import 'package:dart_code_algorithms/dart_examples/type_map.dart';
 import 'package:dart_code_algorithms/profile_info.dart/profile_ui.dart';
 import 'package:flutter/material.dart';
 
+import 'future_example/future_example.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ProfileInfo(),
+      home: const FutureExamplePage(),
     );
   }
 }
