@@ -1,3 +1,4 @@
+import 'package:dart_code_algorithms/future_example/profile.dart';
 import 'package:flutter/material.dart';
 
 class FutureExamplePage extends StatefulWidget {
@@ -8,36 +9,112 @@ class FutureExamplePage extends StatefulWidget {
 }
 
 class _FutureExamplePageState extends State<FutureExamplePage> {
-  int currentNumber = 0;
-  int endNumber = 20;
-  bool isDone = true;
-  Future<int> countNumbers() async {
+  TotalTimeModel? item;
+  @override
+  void initState() {
+    init();
+
+    super.initState();
+  }
+
+  init() async {
     setState(() {
-      isDone = false;
+      item = TotalTimeModel(time: minute);
     });
-    for (int i = 0; i < 25 * 60; i++) {
+  }
+
+  Color? backgroundColorThenStart = Colors.purple;
+  late TextStyle? stil = Theme.of(context)
+      .textTheme
+      .titleLarge
+      ?.copyWith(color: Colors.black, fontSize: 50);
+
+  bool backgroundChange = false;
+  int currentNumber = 0;
+  int endNumber = 10;
+  int second = 0;
+  int minute = 0;
+  bool isDone = true;
+  int succesValue = 0;
+  int total = 0;
+  bool once = true;
+
+// toplam zaman
+
+  totalTime() {
+    setState(() {});
+    return minute;
+  }
+
+// saniye + dakika
+  Future secondFunction() async {
+    for (var i = 0; i < 5; i++) {
       setState(() {
         currentNumber++;
+        backgroundChange = true;
       });
-
       await Future.delayed(const Duration(seconds: 1));
+      if (i == 4) {
+        setState(() {
+          currentNumber = 0;
+          minute++;
+          i++;
+        });
+        setState(() {});
+      }
     }
-    setState(() {
-      isDone = true;
-    });
-    return currentNumber;
+    return;
   }
 
-  showMessage(int val) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("25 dakika doldu. 5 dakika mola verin! Değer $val")));
+// başarı etiketleri metodu
+
+  Future<int> successfullMethods() async {
+    if (minute == 3) {
+      succesValue++;
+      setState(() {});
+    }
+    if (minute == 5) {
+      setState(() {});
+      succesValue++;
+    }
+    if (minute == 8) {
+      succesValue++;
+    }
+    return succesValue;
   }
+
+  // segmented fonksiyon:
+
+  Future stopTimer() async {}
+  Future deleteTimer() async {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          backgroundChange == false ? Colors.white : backgroundColorThenStart,
       appBar: AppBar(
-        title: const Text("Future Example"),
+        centerTitle: true,
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProfileDart(
+                            timeset: minute,
+                          )));
+            },
+            child: const CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person),
+            ),
+          )
+        ],
+        title: const Text("Zamanlayıcı"),
+        backgroundColor:
+            backgroundChange == false ? Colors.white : backgroundColorThenStart,
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -45,29 +122,91 @@ class _FutureExamplePageState extends State<FutureExamplePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Başladığınızdan bu yana $currentNumber saniye geçti..",
-              style: const TextStyle(fontSize: 20),
-            ),
+            Center(
+                child: RichText(
+                    text: TextSpan(
+                        text: minute.toString(),
+                        style: stil,
+                        children: [
+                  TextSpan(text: ":", style: stil),
+                  TextSpan(text: currentNumber.toString(), style: stil)
+                ]))),
+            Text(item?.time.toString() ?? "null"),
             const SizedBox(
-              height: 12,
+              height: 80,
             ),
-            ElevatedButton.icon(
-                onPressed: () async {
-                  await countNumbers();
-                  showMessage(currentNumber);
+            succesValue > 0
+                ? SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: GridView.count(
+                      primary: false,
+                      padding: const EdgeInsets.all(10),
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: succesValue,
+                      children: [
+                        ...List.generate(succesValue, (int index) {
+                          return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.teal[100],
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: const Image(
+                                  image:
+                                      AssetImage("assets/image/cactus.png")));
+                        })
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            Text(total.toString()),
+            const Spacer(),
+            once == true
+                ? ElevatedButton.icon(
+                    label: const Text("başlat"),
+                    onPressed: () async {
+                      once = false;
+                      for (var i = 0; i < endNumber; i++) {
+                        if (minute > 9) {
+                          return;
+                        }
+
+                        await secondFunction();
+                        setState(() {});
+                        successfullMethods();
+                        total = totalTime();
+                        init();
+                      }
+
+                      setState(() {});
+                    },
+                    icon: const Icon(Icons.play_arrow))
+                : ElevatedButton(
+                    onPressed: () {}, child: const Text("sıfırla")),
+            const SizedBox(
+              width: 50,
+            ),
+            SliderTheme(
+              data: const SliderThemeData(
+                trackHeight: 10,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+              ),
+              child: Slider(
+                activeColor: Colors.red,
+                inactiveColor: Colors.black,
+                value: minute.toDouble(),
+                divisions: 200,
+                min: 0,
+                max: endNumber.toDouble(),
+                onChanged: (double val) async {
+                  setState(() {
+                    minute = val.toInt();
+                  });
                 },
-                icon: isDone == true
-                    ? const Icon(Icons.punch_clock)
-                    : const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Center(
-                            child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        )),
-                      ),
-                label: const Text("Start"))
+              ),
+            ),
           ],
         ),
       ),
@@ -75,14 +214,53 @@ class _FutureExamplePageState extends State<FutureExamplePage> {
   }
 }
 
+class TotalTimeModel {
+  int? time;
+  TotalTimeModel({
+    required this.time,
+  });
+}
+
+
+// class CustomSegment extends StatelessWidget {
+//   const CustomSegment({super.key, required this.selected});
+//   final Set<int> selected;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SegmentedButton(
+//         onSelectionChanged: (val) {},
+//         segments: [
+//           ButtonSegment(value: 15, label: Text("onbeş")),
+//           ButtonSegment(value: 30, label: Text("otuz")),
+//           ButtonSegment(value: 40, label: Text("kırk"))
+//         ],
+//         selected: selected);
+//   }
+// }
+
 //async functions
 // Birden fazla yapılan işlemlerde, bu işlemler arasında iş parcacığının tamamlanması diğer işlemlerden farklı
 // ise burada async function kullanılır. Yada kısa süre içerisinde gerçekleşmeyen
 // zamana ihtiyac duyan işlemlerde yine async functionlar kullanılır
 
-
-
 //TODO: ÖDEV
-// iki adet zaman değişkeni tanımlayın. Saniye ve dakika değişkenleri. 
+// iki adet zaman değişkeni tanımlayın. Saniye ve dakika değişkenleri.
 // saniye 60'a ulaşınca dakika değişkeni 1 artsın. dakika değişkeni 2 dakika olunca
 // süreniz doldu diye pop-up cıksın
+
+//  Slider(
+//               max: 100,
+//               min: 0,
+//               value: setTime,
+//               onChanged: (val) {
+//                 setTime = val;
+//                 setState(() {});
+//               }),
+//           ElevatedButton(onPressed: () {}, child: const Text("saati ayarla")),
+
+// ScaffoldMessenger.of(context).showSnackBar(
+//                               const SnackBar(
+//                                   // TODO: value yi tanımla:
+//                                   content: Text(
+//                                       "25 dakika doldu. 5 dakika mola verin! sıfırladıktan sonra tekrar başlatabilirsin ")));
