@@ -1,64 +1,86 @@
-// // ignore_for_file: public_member_api_docs, sort_constructors_first
-// import 'package:dart_code_algorithms/future_example/future_example.dart';
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// class ProfileDart extends StatefulWidget {
-//   const ProfileDart({super.key, required this.timeset});
-//   final int timeset;
+class ProfileDart extends StatefulWidget {
+  const ProfileDart({super.key});
 
-//   @override
-//   State<ProfileDart> createState() => _ProfileDartState();
-// }
+  @override
+  State<ProfileDart> createState() => _ProfileDartState();
+}
 
-// class _ProfileDartState extends State<ProfileDart> {
-//   TotalTimeModel? model;
-//   @override
-//   void initState() {
-//     model = TotalTimeModel(time: model?.time ?? 150);
-//     super.initState();
-//   }
+class _ProfileDartState extends State<ProfileDart> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 9, 110, 88),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const CircleAvatar(backgroundColor: Colors.red, radius: 50),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Zamanlama takvimi",
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(color: Colors.white),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              const SingleChoice(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-//   bool messageNotification = true;
-//   late TextStyle? style =
-//       Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white);
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white10,
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             const CircleAvatar(backgroundColor: Colors.red, radius: 50),
-//             const SizedBox(
-//               height: 20,
-//             ),
-//             Text(
-//               "bilgiler",
-//               style: style?.copyWith(fontSize: 30),
-//             ),
-//             Text(
-//               "toplam zaman :  ${model?.time}",
-//               style: style,
-//             ),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 Text(
-//                   "motivasyon mesajı",
-//                   style: style,
-//                 ),
-//                 Switch(
-//                     value: messageNotification,
-//                     onChanged: (val) {
-//                       messageNotification = val;
-//                       setState(() {});
-//                     })
-//               ],
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+enum Calendar { second, minute, hour, day }
+
+class SingleChoice extends StatefulWidget {
+  const SingleChoice({super.key});
+
+  @override
+  State<SingleChoice> createState() => _SingleChoiceState();
+}
+
+class _SingleChoiceState extends State<SingleChoice> {
+  Calendar calendarView = Calendar.day;
+
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton<Calendar>(
+      segments: const <ButtonSegment<Calendar>>[
+        ButtonSegment<Calendar>(
+            value: Calendar.second,
+            label: Text('saniye'),
+            icon: Icon(Icons.hourglass_empty)),
+        ButtonSegment<Calendar>(
+            value: Calendar.minute,
+            label: Text('dakika'),
+            icon: Icon(Icons.hourglass_top_outlined)),
+        ButtonSegment<Calendar>(
+            value: Calendar.hour,
+            label: Text('saat'),
+            icon: Icon(Icons.hourglass_bottom)),
+        ButtonSegment<Calendar>(
+            enabled: false,
+            value: Calendar.day,
+            label: Text('gün'),
+            icon: Icon(Icons.view_day)),
+      ],
+      selected: <Calendar>{calendarView},
+      onSelectionChanged: (Set<Calendar> newSelection) {
+        setState(() {
+          calendarView = newSelection.first;
+        });
+      },
+    );
+  }
+}

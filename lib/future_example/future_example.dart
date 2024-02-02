@@ -1,6 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:dart_code_algorithms/future_example/custom_widget/custom_container.dart';
+import 'package:dart_code_algorithms/future_example/custom_widget/custom_floating_button.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dart_code_algorithms/future_example/profile.dart';
 
 class FutureExamplePage extends StatefulWidget {
   const FutureExamplePage({super.key});
@@ -11,17 +16,24 @@ class FutureExamplePage extends StatefulWidget {
 
 class _FutureExamplePageState extends State<FutureExamplePage>
     with SingleTickerProviderStateMixin {
+  TotalTimeModel? model;
+  List<TotalTimeModel> totalList = [];
   bool paused = false;
+  bool tek = false;
 
   Timer? _timer;
   int second = 0;
   int minute = 0;
+  int hour = 0;
   late AnimationController controller;
   late Animation<double> animation;
 
   @override
   void initState() {
     super.initState();
+
+    // Icon  animation
+
     controller = AnimationController(
       vsync: this,
       reverseDuration: const Duration(milliseconds: 200),
@@ -30,20 +42,37 @@ class _FutureExamplePageState extends State<FutureExamplePage>
 
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
 
-    _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      if (paused == false) {
-        setState(() {
-          second++;
-        });
-      }
-    });
+    // timer start
+
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (paused == false) {
+          setState(() {
+            second++;
+          });
+        }
+        if (second == 59) {
+          second = 0;
+          minute++;
+        }
+        if (minute == 59) {
+          minute = 0;
+          hour++;
+        }
+      },
+    );
   }
+
+  //  pause and play timer
 
   startTimer() {
     setState(() {
       paused = !paused;
     });
   }
+
+  // timer dispose
 
   @override
   void dispose() {
@@ -54,52 +83,123 @@ class _FutureExamplePageState extends State<FutureExamplePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const ProfileDart(),
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Zamanlayıcı"),
       ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("$second. Saniye"),
-            const SizedBox(
-              height: 12,
-            ),
-            ElevatedButton.icon(
-              label: Text(paused ? "Başlat" : "Durdur"),
-              onPressed: () {
-                paused ? controller.forward() : controller.reverse();
-                startTimer();
-              },
-              icon: AnimatedIcon(
-                  icon: AnimatedIcons.play_pause, progress: animation),
-            ),
-            const SizedBox(
-              width: 50,
-            ),
-            SliderTheme(
-              data: const SliderThemeData(
-                trackHeight: 10,
-                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomFloatingActionButton(
+            buttonName: "sıfırla",
+            timerFunction: () {
+              minute = 0;
+              second = 0;
+              hour = 0;
+              totalList.clear();
+              setState(() {});
+            },
+          ),
+          const SizedBox(
+            width: 200,
+          ),
+          CustomFloatingActionButton(
+            buttonName: "tur",
+            timerFunction: () {
+              totalList.add(TotalTimeModel(
+                  totalsecond: second, totalminute: minute, totalhour: hour));
+              setState(() {});
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomContainerTime(time: hour),
+                  Text(
+                    ":",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontSize: 30),
+                  ),
+                  CustomContainerTime(time: minute),
+                  Text(
+                    ":",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontSize: 30),
+                  ),
+                  CustomContainerTime(time: second)
+                ],
               ),
-              child: Slider(
-                activeColor: Colors.red,
-                inactiveColor: Colors.black,
-                value: second.toDouble(),
-                divisions: 200,
-                min: 0,
-                max: 100,
-                onChanged: (double val) async {
-                  setState(() {
-                    second = val.toInt();
-                  });
+              SliderTheme(
+                data: const SliderThemeData(
+                  trackHeight: 10,
+                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                ),
+                child: Slider(
+                  activeColor: Colors.teal.shade700,
+                  inactiveColor: Colors.teal.shade300,
+                  value: second.toDouble(),
+                  divisions: 200,
+                  min: 0,
+                  max: 59,
+                  onChanged: (double val) async {
+                    setState(() {
+                      second = val.toInt();
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              ElevatedButton.icon(
+                label: Text(paused ? "Başlat" : "Durdur"),
+                onPressed: () {
+                  paused ? controller.forward() : controller.reverse();
+                  startTimer();
                 },
+                icon: AnimatedIcon(
+                    icon: AnimatedIcons.play_pause, progress: animation),
               ),
-            ),
-          ],
+              const SizedBox(
+                width: 50,
+              ),
+              ...List.generate(totalList.length, (index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 100),
+                      child: ListTile(
+                        leading: Text((index + 1).toString()),
+                        title: Text(
+                            " ${totalList[index].totalhour.toString()}  :   ${totalList[index].totalminute.toString()} , ${totalList[index].totalsecond.toString()}"),
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.teal.shade900,
+                      height: 1,
+                      endIndent: 50,
+                      indent: 50,
+                      thickness: 1,
+                    ),
+                  ],
+                );
+              }).toList(),
+            ],
+          ),
         ),
       ),
     );
@@ -107,51 +207,20 @@ class _FutureExamplePageState extends State<FutureExamplePage>
 }
 
 class TotalTimeModel {
-  int? time;
-  TotalTimeModel({
-    required this.time,
-  });
+  int? totalsecond;
+  int? totalminute;
+  int? totalhour;
+  TotalTimeModel(
+      {required this.totalsecond,
+      required this.totalminute,
+      required this.totalhour});
 }
 
-// class CustomSegment extends StatelessWidget {
-//   const CustomSegment({super.key, required this.selected});
-//   final Set<int> selected;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return SegmentedButton(
-//         onSelectionChanged: (val) {},
-//         segments: [
-//           ButtonSegment(value: 15, label: Text("onbeş")),
-//           ButtonSegment(value: 30, label: Text("otuz")),
-//           ButtonSegment(value: 40, label: Text("kırk"))
-//         ],
-//         selected: selected);
-//   }
-// }
+
 
 //async functions
 // Birden fazla yapılan işlemlerde, bu işlemler arasında iş parcacığının tamamlanması diğer işlemlerden farklı
 // ise burada async function kullanılır. Yada kısa süre içerisinde gerçekleşmeyen
 // zamana ihtiyac duyan işlemlerde yine async functionlar kullanılır
 
-//TODO: ÖDEV
-// iki adet zaman değişkeni tanımlayın. Saniye ve dakika değişkenleri.
-// saniye 60'a ulaşınca dakika değişkeni 1 artsın. dakika değişkeni 2 dakika olunca
-// süreniz doldu diye pop-up cıksın
-
-//  Slider(
-//               max: 100,
-//               min: 0,
-//               value: setTime,
-//               onChanged: (val) {
-//                 setTime = val;
-//                 setState(() {});
-//               }),
-//           ElevatedButton(onPressed: () {}, child: const Text("saati ayarla")),
-
-// ScaffoldMessenger.of(context).showSnackBar(
-//                               const SnackBar(
-//                                   // TODO: value yi tanımla:
-//                                   content: Text(
-//                                       "25 dakika doldu. 5 dakika mola verin! sıfırladıktan sonra tekrar başlatabilirsin ")));
