@@ -31,8 +31,8 @@ class _FutureExamplePageState extends State<FutureExamplePage>
   @override
   void initState() {
     super.initState();
-
-    // Icon  animation
+//second= pref.getLastTime();
+    second = 20;
 
     controller = AnimationController(
       vsync: this,
@@ -114,15 +114,20 @@ class _FutureExamplePageState extends State<FutureExamplePage>
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.teal.shade100,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomContainerTime(time: hour),
                   Text(
@@ -143,63 +148,75 @@ class _FutureExamplePageState extends State<FutureExamplePage>
                   CustomContainerTime(time: second)
                 ],
               ),
-              SliderTheme(
-                data: const SliderThemeData(
-                  trackHeight: 10,
-                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
-                ),
-                child: Slider(
-                  activeColor: Colors.teal.shade700,
-                  inactiveColor: Colors.teal.shade300,
-                  value: second.toDouble(),
-                  divisions: 200,
-                  min: 0,
-                  max: 59,
-                  onChanged: (double val) async {
-                    setState(() {
-                      second = val.toInt();
-                    });
-                  },
-                ),
+            ),
+            SliderTheme(
+              data: const SliderThemeData(
+                trackHeight: 10,
+                thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              ElevatedButton.icon(
-                label: Text(paused ? "Başlat" : "Durdur"),
-                onPressed: () {
-                  paused ? controller.forward() : controller.reverse();
-                  startTimer();
+              child: Slider(
+                activeColor: Colors.teal.shade700,
+                inactiveColor: Colors.teal.shade300,
+                value: second.toDouble(),
+                divisions: 200,
+                min: 0,
+                max: 59,
+                onChanged: (double val) async {
+                  setState(() {
+                    second = val.toInt();
+                  });
                 },
-                icon: AnimatedIcon(
-                    icon: AnimatedIcons.play_pause, progress: animation),
               ),
-              const SizedBox(
-                width: 50,
-              ),
-              ...List.generate(totalList.length, (index) {
-                return Column(
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            ElevatedButton.icon(
+              label: Text(paused ? "Başlat" : "Durdur"),
+              onPressed: () {
+                paused ? controller.forward() : controller.reverse();
+                startTimer();
+              },
+              icon: AnimatedIcon(
+                  icon: AnimatedIcons.play_pause, progress: animation),
+            ),
+            const SizedBox(
+              width: 50,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 100),
-                      child: ListTile(
-                        leading: Text((index + 1).toString()),
-                        title: Text(
-                            " ${totalList[index].totalhour.toString()}  :   ${totalList[index].totalminute.toString()} , ${totalList[index].totalsecond.toString()}"),
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.teal.shade900,
-                      height: 1,
-                      endIndent: 50,
-                      indent: 50,
-                      thickness: 1,
+                    ...List.generate(totalList.length, (index) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 100),
+                            child: ListTile(
+                              leading: Text((index + 1).toString()),
+                              title: Text(
+                                  " ${totalList[index].totalhour.toString()}  :   ${totalList[index].totalminute.toString()} , ${totalList[index].totalsecond.toString()}"),
+                            ),
+                          ),
+                          Divider(
+                            color: Colors.teal.shade900,
+                            height: 1,
+                            endIndent: 50,
+                            indent: 50,
+                            thickness: 1,
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                    const SizedBox(
+                      height: 120,
                     ),
                   ],
-                );
-              }).toList(),
-            ],
-          ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
