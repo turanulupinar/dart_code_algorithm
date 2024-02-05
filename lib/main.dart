@@ -1,9 +1,6 @@
 import 'package:dart_code_algorithms/dart_examples/type_map.dart';
-import 'package:dart_code_algorithms/future_example/future_example2.dart';
-import 'package:dart_code_algorithms/profile_info.dart/profile_ui.dart';
-import 'package:flutter/material.dart';
 
-import 'future_example/future_example.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const FutureExample2(),
+      home: const MyHomePage(),
     );
   }
 }
@@ -52,16 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProfileInfo()));
-              },
-              child: const Text("profile"))
-        ],
         title: const Text("Code Algorithms"),
       ),
       body: Center(
@@ -96,45 +83,3 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 }
-
-
-
-
- 
-
-
-//   onPressed() {
- 
-//     Student student2;
-//     var student = Student(
-//         name: "Fahri",
-//         surname: "Dursun",
-//         classroom: 3,
-//         lesson: Lesson("ders yapıldı"));
-
-//      student2 = student..name = "Ahmet";
-
-//     result = name.toString();
-
-//     setState(() {});
-//   }
-// class Student {
-//   String? name;
-//   String? surname;
-//   int? classroom;
-//   Lesson? lesson;
-//   Student({this.name, this.surname, this.classroom, this.lesson});
-
-//   @override
-//   String toString() {
-//     return 'Student(name: $name, surname: $surname, classroom: $classroom, lesson: $lesson)';
-//   }
-// }
-
-// class Lesson {
-//   String? turkce;
-//   Lesson(this.turkce);
-
-//   @override
-//   String toString() => 'Lesson(turkce: $turkce)';
-// }
