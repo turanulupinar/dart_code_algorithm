@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:dart_code_algorithms/future_example/custom_widget/custom_container.dart';
 import 'package:dart_code_algorithms/future_example/custom_widget/custom_floating_button.dart';
+import 'package:dart_code_algorithms/future_example/data/shared_data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dart_code_algorithms/future_example/profile.dart';
@@ -27,12 +28,19 @@ class _FutureExamplePageState extends State<FutureExamplePage>
   int hour = 0;
   late AnimationController controller;
   late Animation<double> animation;
+  SharedPreferancesTimedata? timedata = SharedPreferancesTimedata();
+
+  Future getTimeShared() async {
+    second = await timedata?.getData("second") ?? 5;
+    minute = await timedata?.getData("minute") ?? 5;
+    hour = await timedata?.getData("hour") ?? 5;
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-//second= pref.getLastTime();
-    second = 20;
+    getTimeShared();
 
     controller = AnimationController(
       vsync: this,
@@ -45,7 +53,7 @@ class _FutureExamplePageState extends State<FutureExamplePage>
     // timer start
 
     _timer = Timer.periodic(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 1),
       (timer) {
         if (paused == false) {
           setState(() {
@@ -173,7 +181,10 @@ class _FutureExamplePageState extends State<FutureExamplePage>
             ),
             ElevatedButton.icon(
               label: Text(paused ? "Başlat" : "Durdur"),
-              onPressed: () {
+              onPressed: () async {
+                await timedata?.saveData("second", second);
+                await timedata?.saveData("minute", minute);
+                await timedata?.saveData("hour", hour);
                 paused ? controller.forward() : controller.reverse();
                 startTimer();
               },
