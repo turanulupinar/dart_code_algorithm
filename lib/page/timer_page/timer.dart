@@ -1,12 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:dart_code_algorithms/future_example/custom_widget/custom_container.dart';
-import 'package:dart_code_algorithms/future_example/custom_widget/custom_floating_button.dart';
-import 'package:dart_code_algorithms/future_example/data/shared_data.dart';
+import 'package:dart_code_algorithms/page/custom_widget/custom_container.dart';
+import 'package:dart_code_algorithms/page/custom_widget/custom_floating_button.dart';
+import 'package:dart_code_algorithms/page/data/shared_data.dart';
+import 'package:dart_code_algorithms/page/timer_page/timer_model.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dart_code_algorithms/future_example/profile.dart';
+import 'package:dart_code_algorithms/page/profile.dart';
+
+import 'timer_view_model.dart';
 
 class FutureExamplePage extends StatefulWidget {
   const FutureExamplePage({super.key});
@@ -21,27 +24,31 @@ class _FutureExamplePageState extends State<FutureExamplePage>
   List<TotalTimeModel> totalList = [];
   bool paused = false;
   bool tek = false;
-
+  TimerViewModel timerViewModel = TimerViewModel();
+  TimerModel? timerModel;
   Timer? _timer;
+  Timer? _timer2;
   int second = 0;
   int minute = 0;
   int hour = 0;
+  int millisecond = 0;
   late AnimationController controller;
   late Animation<double> animation;
   SharedPreferancesTimedata? timedata = SharedPreferancesTimedata();
 
-  Future getTimeShared() async {
-    second = await timedata?.getData("second") ?? 5;
-    minute = await timedata?.getData("minute") ?? 5;
-    hour = await timedata?.getData("hour") ?? 5;
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
-    getTimeShared();
 
+    timerViewModel.getTimeShared().then((value) {
+      setState(() {
+        timerModel = value;
+        // hour = value.hour;
+        // minute = value.minute;
+        // second = value.second;
+        // millisecond = value.millisecond;
+      });
+    });
     controller = AnimationController(
       vsync: this,
       reverseDuration: const Duration(milliseconds: 200),
@@ -51,9 +58,19 @@ class _FutureExamplePageState extends State<FutureExamplePage>
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
 
     // timer start
-
+    _timer2 = Timer.periodic(const Duration(milliseconds: 1), (timer) {
+      if (paused == false) {
+        setState(() {
+          if (millisecond > 99) {
+            millisecond = 0;
+            return;
+          }
+          millisecond++;
+        });
+      }
+    });
     _timer = Timer.periodic(
-      const Duration(milliseconds: 1),
+      const Duration(seconds: 1),
       (timer) {
         if (paused == false) {
           setState(() {
@@ -85,6 +102,7 @@ class _FutureExamplePageState extends State<FutureExamplePage>
   @override
   void dispose() {
     _timer?.cancel();
+    _timer2?.cancel();
     super.dispose();
   }
 
@@ -153,7 +171,15 @@ class _FutureExamplePageState extends State<FutureExamplePage>
                         .bodyLarge
                         ?.copyWith(fontSize: 30),
                   ),
-                  CustomContainerTime(time: second)
+                  CustomContainerTime(time: second),
+                  Text(
+                    ":",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontSize: 30),
+                  ),
+                  CustomContainerTime(time: millisecond),
                 ],
               ),
             ),

@@ -3,7 +3,7 @@ import 'package:dart_code_algorithms/dart_examples/type_map.dart';
 import 'package:dart_code_algorithms/profile_info.dart/profile_ui.dart';
 import 'package:flutter/material.dart';
 
-import 'future_example/future_example.dart';
+import 'page/timer_page/timer.dart';
 
 void main() {
   runApp(const MyApp());
